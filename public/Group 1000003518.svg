@@ -1,0 +1,16 @@
+<svg width="40" height="24" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="40" height="24" rx="12" fill="url(#paint0_linear_161_2989)"/>
+<line x1="9" y1="8.00049" x2="9" y2="15.1926" stroke="white" stroke-width="2" stroke-linecap="round"/>
+<circle cx="1.2" cy="1.2" r="1.2" transform="matrix(1 0 0 -1 18.4004 12.4631)" fill="white"/>
+<circle cx="1.2" cy="1.2" r="1.2" transform="matrix(1 0 0 -1 24.1172 12.4631)" fill="white"/>
+<path d="M26.4668 7C28.9521 7 30.9667 9.01475 30.9668 11.5C30.9668 13.2901 29.9215 14.8357 28.4082 15.5605L29.4521 19L26.7881 15.9863C26.6819 15.9938 26.5749 16 26.4668 16H17.8672C15.3819 15.9999 13.3672 13.9853 13.3672 11.5C13.3673 9.01481 15.382 7.0001 17.8672 7H26.4668ZM17.8672 9C16.4865 9.0001 15.3673 10.1194 15.3672 11.5C15.3672 12.8807 16.4865 13.9999 17.8672 14H26.4668C27.8476 14 28.9668 12.8808 28.9668 11.5C28.9666 10.1193 27.8475 9 26.4668 9H17.8672Z" fill="white"/>
+<ellipse cx="30.7996" cy="11.5001" rx="1.2" ry="2.25009" fill="white"/>
+<ellipse cx="13.2" cy="11.5001" rx="1.2" ry="2.25009" fill="white"/>
+<defs>
+<linearGradient id="paint0_linear_161_2989" x1="0" y1="0" x2="41.5142" y2="21.0078" gradientUnits="userSpaceOnUse">
+<stop stop-color="#00BCC9"/>
+<stop offset="0.5" stop-color="#4C36E4"/>
+<stop offset="1" stop-color="#CF20AE"/>
+</linearGradient>
+</defs>
+</svg>
