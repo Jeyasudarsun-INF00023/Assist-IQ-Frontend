@@ -643,8 +643,11 @@ import axios from 'axios'
 import { Search as SearchIcon, Trash2 as TrashIcon } from 'lucide-vue-next'
 import { assetView as view } from '../store/assetStore'
 
-const API_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8000'
-const api = axios.create({ baseURL: API_URL })
+const API_URL = process.env.BACKEND_URL || 'https://assist-iq-backend-2.onrender.com'||'http://127.0.0.1:8000'
+
+const api = axios.create({
+  baseURL: API_URL
+})
 
 // ── State ──
 const currentTab = ref('Laptop')

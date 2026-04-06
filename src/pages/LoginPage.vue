@@ -41,6 +41,8 @@ import lottie from 'lottie-web'
 const router = useRouter()
 const lottieContainer = ref(null)
 
+const API_URL = process.env.BACKEND_URL || 'https://assist-iq-backend-2.onrender.com'||'http://127.0.0.1:8000'
+
 const decodeJwt = (token) => {
   try {
     const base64Url = token.split('.')[1];
@@ -67,7 +69,7 @@ const handleCredentialResponse = async (response) => {
     }
 
     // Call the backend to connect/register the account
-    const res = await axios.post('http://localhost:8000/auth/login', googleUser)
+    const res = await axios.post(`${API_URL}/auth/login`, googleUser)
     
     if (res.data.success) {
       localStorage.setItem('isLoggedIn', 'true')

@@ -145,8 +145,11 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import axios from 'axios'
-const API_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8000'
-const api = axios.create({ baseURL: API_URL })
+const API_URL = process.env.BACKEND_URL || 'https://assist-iq-backend-2.onrender.com'||'http://127.0.0.1:8000'
+
+const api = axios.create({
+  baseURL: API_URL
+})
 
 const searchQuery = ref('')
 const priority = ref('All')
