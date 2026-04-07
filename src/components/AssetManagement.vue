@@ -98,7 +98,6 @@
       <!-- Curved Header & Toggle -->
       <div class="header-curve-container row justify-center no-wrap">
         <div class="header-curve-left"></div>
-        <div class="asset-category-bar row no-wrap items-center">
           <div
             :class="['asset-category-btn', assetCategory === 'Employee' ? 'active-category' : '']"
             @click="assetCategory = 'Employee'; currentTab = employeeAssetTypes[0]; view='list'"
@@ -107,7 +106,7 @@
             :class="['asset-category-btn', assetCategory === 'Office' ? 'active-category' : '']"
             @click="assetCategory = 'Office'; currentTab = officeAssetTypes[0]; view='list'"
           >Office Asset</div>
-        </div>
+       
         <div class="header-curve-right"></div>
       </div>
 
@@ -1268,33 +1267,34 @@ function submitNewAsset() {
   flex: 1;
   background: white;
   height: 60px;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
   position: relative;
 }
 
 .header-curve-left::after {
-  content: "";
-  position: absolute;
-  right: -30px;
-  bottom: 0;
-  width: 30px;
-  height: 30px;
-  background: transparent;
-  border-bottom-left-radius: 30px;
-  box-shadow: -15px 0 0 0 white;
+    content: "";
+    position: absolute;
+    right: -35px;
+    top: 26px;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border-bottom-left-radius: 40px;
+    box-shadow: -20px 0 0 0 white;
+    z-index: 5;
 }
-
 .header-curve-right::before {
   content: "";
   position: absolute;
-  left: -30px;
-  bottom: 0;
-  width: 30px;
-  height: 30px;
+    left: -35px;
+    top: 26px;
+    width: 40px;
+    height: 40px;
   background: transparent;
-  border-bottom-right-radius: 30px;
-  box-shadow: 15px 0 0 0 white;
+  border-bottom-right-radius: 40px;
+  box-shadow: 20px 0 0 0 rgb(255, 255, 255);
+  z-index: 5;
 }
 
 /* --- Category Switcher (Employee / Office) --- */
@@ -1307,18 +1307,22 @@ function submitNewAsset() {
   margin: 0 10px;
 }
 .asset-category-btn {
-  padding: 8px 24px;
-  border-radius: 40px;
+  padding: 10px 32px;
+  border-radius: 50px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
   color: #64748B;
   transition: all 0.3s;
   font-size: 14px;
+  background: #F1F5F9;
+  z-index: 20;
+  margin: 0 6px;
+  margin-bottom: 18px; 
 }
 .active-category {
-  background: #4B49E7;
+  background: #4C36E4;
   color: white;
-  box-shadow: 0 4px 10px rgba(75, 73, 231, 0.2);
+  box-shadow: 0 10px 20px rgba(76, 54, 228, 0.25);
 }
 
 /* --- Sub-Tabs (Laptop / Mouse / Headset) --- */

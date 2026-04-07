@@ -3230,6 +3230,13 @@ const connectActivitySocket = (employeeEmpId) => {
 
 .upload-input :deep(.q-field__control-container) {
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-input :deep(.q-field__native) {
+  display: none;
 }
 
 .upload-label {
@@ -3298,12 +3305,11 @@ const connectActivitySocket = (employeeEmpId) => {
   min-height: 48px;
 }
 
-/* Adjust margins to make space for top labels */
+
 .row.q-col-gutter-md > div {
   padding-top: 23px;
 }
 
-/* Fix select dropdown arrow */
 .form-input :deep(.q-select__dropdown-icon) {
   color: #111827;
 }
