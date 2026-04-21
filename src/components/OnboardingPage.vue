@@ -1560,15 +1560,9 @@
 
 <script setup>
 import { ref, computed, onMounted, reactive } from 'vue'
-import axios from 'axios'
+import api, { API_URL } from '../api'
 import { IdCard as IdCardIcon, Search as SearchIcon, Upload as UploadIcon, Camera as CameraIcon, Armchair as ArmchairIcon, FileText as FileTextIcon, ArrowUpRight as ArrowUpRightIcon, ArrowRight as ArrowRightIcon, Mouse as MouseIcon, Monitor as MonitorIcon, Headphones as HeadphonesIcon, UserRoundMinus as UserRoundMinusIcon, MoreVertical as MoreVerticalIcon } from 'lucide-vue-next'
 import NoResult from './NoResult.vue'
-
-const API_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8000' || 'https://assist-iq-backend-2.onrender.com'
-
-const api = axios.create({
-  baseURL: API_URL
-})
 
 const employees = ref([])
 const searchQuery = ref('')

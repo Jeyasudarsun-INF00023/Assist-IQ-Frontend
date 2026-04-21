@@ -890,15 +890,7 @@
 
 <script setup>
 import { ref, onMounted, nextTick, computed, watch } from 'vue'
-import axios from 'axios'
-
-// Configure API Base URL
-const API_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8000' || 'https://assist-iq-backend-2.onrender.com'
-
-const api = axios.create({
-  baseURL: API_URL,
-  timeout: 0
-});
+import api from '../api'
 
 import lottie from 'lottie-web';
 import { 
