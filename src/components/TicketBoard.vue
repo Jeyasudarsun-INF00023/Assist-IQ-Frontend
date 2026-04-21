@@ -78,8 +78,8 @@
           </div>
           
           <div class="column-content">
-            <div v-if="columns[key].length === 0" class="empty-column text-grey-4 text-center q-pa-lg">
-              No tickets
+            <div v-if="columns[key].length === 0" class="flex flex-center q-pa-lg" style="min-height: 200px;">
+              <NoResult width="150px" height="150px" />
             </div>
             <div v-for="t in columns[key]" :key="t.id" class="ticket-card q-mb-md relative-position">
               <div class="row items-center justify-between q-mb-sm">
@@ -170,7 +170,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
-const API_URL = process.env.BACKEND_URL || 'https://assist-iq-backend-2.onrender.com'||'http://127.0.0.1:8000'
+import NoResult from './NoResult.vue'
+const API_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8000' || 'https://assist-iq-backend-2.onrender.com'
 
 const api = axios.create({
   baseURL: API_URL

@@ -80,12 +80,14 @@
         label="Connect Gmail"
         color="primary"
         @click="loginGoogle"
+        style="border-radius: 30px;"
+        class="q-mr-md"
       />
     </div>
 
     <!-- Incoming Emails Grid -->
-    <div v-if="incomingEmails.length === 0 && tickets.length === 0" class="text-grey-6 q-mb-lg text-center">
-      No items found.
+    <div v-if="filteredEmails.length === 0" class="flex flex-center q-pa-xl">
+      <NoResult />
     </div>
 
     <div class="row q-col-gutter-lg">
@@ -145,7 +147,8 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import axios from 'axios'
-const API_URL = process.env.BACKEND_URL || 'https://assist-iq-backend-2.onrender.com'||'http://127.0.0.1:8000'
+import NoResult from './NoResult.vue'
+const API_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8000' || 'https://assist-iq-backend-2.onrender.com'
 
 const api = axios.create({
   baseURL: API_URL

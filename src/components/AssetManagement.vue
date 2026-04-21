@@ -39,9 +39,9 @@
             <div class="text-h5 text-weight-bold">Manage Assets</div>
             <q-btn flat round dense icon="close" v-close-popup />
           </div>
-          <p class="text-grey-7 q-mb-xl" style="font-size: 14px; opacity: 0.8;">Note: All data will be removed if the asset contains its own data.</p>
+          <p class="text-grey-7 q-mb-xl" style="font-size: 14px; margin-top: 23px; opacity: 0.8;">Note: All data will be removed if the asset contains its own data.</p>
           
-          <div class="text-weight-bold q-mb-lg" style="font-size: 16px;">Select Assets</div>
+          <div class="text-weight-bold q-mb-md" style="font-size: 16px; margin-top: -20px;">Select Assets</div>
           
           <div class="q-gutter-y-sm asset-manage-scroll">
             <div
@@ -66,7 +66,7 @@
               no-caps
               label="Remove"
               class="unassign-yes-btn"
-              style="background: #E85B58 !important; min-width: 140px;"
+              style="background: #EA6060 !important; min-width: 140px;"
               :disabled="selectedAssetTypesToManage.length === 0"
               @click="confirmRemoveTypes"
             />
@@ -100,11 +100,11 @@
         <div class="header-curve-left"></div>
           <div
             :class="['asset-category-btn', assetCategory === 'Employee' ? 'active-category' : '']"
-            @click="assetCategory = 'Employee'; currentTab = employeeAssetTypes[0]; view='list'"
+            @click="assetCategory = 'Employee'; currentTab = employeeAssetTypes[0]; view='list'; resetFilters()"
           >Employee Asset</div>
           <div
             :class="['asset-category-btn', assetCategory === 'Office' ? 'active-category' : '']"
-            @click="assetCategory = 'Office'; currentTab = officeAssetTypes[0]; view='list'"
+            @click="assetCategory = 'Office'; currentTab = officeAssetTypes[0]; view='list'; resetFilters()"
           >Office Asset</div>
        
         <div class="header-curve-right"></div>
@@ -142,6 +142,46 @@
             <!-- Filter icon -->
             <q-btn flat round dense class="control-btn shadow-1 bg-white">
               <q-icon name="tune" size="20px" color="grey-9" />
+              <q-menu class="premium-menu" @before-show="syncTempFilters" anchor="bottom right" self="top right">
+                <div class="q-pa-md" style="min-width: 300px; max-height: 291px; margin-bottom: 10px;">
+                  <div class="text-h6 text-weight-bold q-mb-md" style="font-size: 18px; margin-bottom: 10px;">Filter</div>
+                  
+                  <div class="q-mb-md">
+                    <div class="input-label text-grey-7 q-mb-sm" style="font-weight: 500;">Brand</div>
+                    <q-select
+                      v-model="tempFilterBrand"
+                      :options="filterBrands"
+                      outlined
+                      rounded
+                      dense
+                      class="form-select full-width"
+                      behavior="menu"
+                      dropdown-icon="expand_more"
+                      popup-content-class="asset-select-popup"
+                    />
+                  </div>
+
+                  <div class="q-mb-lg">
+                    <div class="input-label text-grey-7 q-mb-sm" style="font-weight: 500;">Device Status</div>
+                    <q-select
+                      v-model="tempFilterDeviceStatus"
+                      :options="filterDeviceStatuses"
+                      outlined
+                      rounded
+                      dense
+                      class="form-select full-width"
+                      behavior="menu"
+                      dropdown-icon="expand_more"
+                      popup-content-class="asset-select-popup"
+                    />
+                  </div>
+                  
+                  <div class="row justify-between q-gutter-x-md q-mt-md">
+                    <q-btn flat no-caps label="Cancel" class="btn-cancel col" v-close-popup />
+                    <q-btn unelevated no-caps label="Apply" class="btn-add col" style="padding: 10px 0;" v-close-popup @click="applyFilter" />
+                  </div>
+                </div>
+              </q-menu>
             </q-btn>
 
             <!-- Actions menu -->
@@ -162,6 +202,7 @@
 
         <div class="table-scroll">
           <q-table
+            v-if="filteredAssets.length > 0"
             :rows="filteredAssets"
             :columns="columns"
             row-key="id"
@@ -229,6 +270,11 @@
             </q-tr>
           </template>
           </q-table>
+          
+          <!-- No Results Animation -->
+          <div v-else class="flex flex-center q-pa-xl">
+            <NoResult />
+          </div>
         </div>
 
         <!-- Pagination / Selection Bar Row -->
@@ -641,8 +687,9 @@ import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 import { Search as SearchIcon, Trash2 as TrashIcon } from 'lucide-vue-next'
 import { assetView as view } from '../store/assetStore'
+import NoResult from './NoResult.vue'
 
-const API_URL = process.env.BACKEND_URL || 'https://assist-iq-backend-2.onrender.com'||'http://127.0.0.1:8000'
+const API_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8000' || 'https://assist-iq-backend-2.onrender.com'
 
 const api = axios.create({
   baseURL: API_URL
@@ -933,6 +980,45 @@ const detailAssetOptions = computed(() => {
   return Array.from(options)
 })
 
+// ── Filter State ──
+const appliedFilterBrand = ref('All')
+const appliedFilterDeviceStatus = ref('All')
+const tempFilterBrand = ref('All')
+const tempFilterDeviceStatus = ref('All')
+
+const filterBrands = computed(() => {
+  const brands = new Set()
+  assets.value.forEach(a => {
+    const isOfficeType = officeAssetTypes.includes(a.type)
+    const assetCat = a.category || (isOfficeType ? 'Office' : 'Employee')
+    if (assetCat === assetCategory.value && a.type === currentTab.value && a.brand) {
+      brands.add(a.brand)
+    }
+  })
+  return ['All', ...Array.from(brands).sort()]
+})
+
+const filterDeviceStatuses = ['All', 'Available', 'Assigned']
+
+const syncTempFilters = () => {
+  tempFilterBrand.value = appliedFilterBrand.value
+  tempFilterDeviceStatus.value = appliedFilterDeviceStatus.value
+}
+
+const applyFilter = () => {
+  appliedFilterBrand.value = tempFilterBrand.value
+  appliedFilterDeviceStatus.value = tempFilterDeviceStatus.value
+  pagination.value.page = 1
+}
+
+const resetFilters = () => {
+  appliedFilterBrand.value = 'All'
+  appliedFilterDeviceStatus.value = 'All'
+  tempFilterBrand.value = 'All'
+  tempFilterDeviceStatus.value = 'All'
+  pagination.value.page = 1
+}
+
 // ── Filtered list ──
 const filteredAssets = computed(() => {
   return assets.value.filter(a => {
@@ -949,7 +1035,22 @@ const filteredAssets = computed(() => {
       (a.brand || '').toLowerCase().includes(q) ||
       (a.model || '').toLowerCase().includes(q) ||
       (a.sn && a.sn.toLowerCase().includes(q))
-    return matchesCategory && matchesTab && matchesSearch
+      
+    // Filter by Brand
+    const matchesBrand = appliedFilterBrand.value === 'All' || a.brand === appliedFilterBrand.value
+    
+    // Filter by Device Status
+    let matchesStatus = true
+    if (appliedFilterDeviceStatus.value !== 'All') {
+      const isAssigned = !!a.assignee
+      if (appliedFilterDeviceStatus.value === 'Assigned') {
+        matchesStatus = isAssigned
+      } else if (appliedFilterDeviceStatus.value === 'Available') {
+        matchesStatus = !isAssigned
+      }
+    }
+
+    return matchesCategory && matchesTab && matchesSearch && matchesBrand && matchesStatus
   })
 })
 
@@ -1053,6 +1154,7 @@ function onAssetTabClick(type) {
   // Show table for selected asset tab on top (not detail edit form)
   view.value = 'list'
   isEditMode.value = false
+  resetFilters()
 }
 
 function prepareCustomFormData(row) {

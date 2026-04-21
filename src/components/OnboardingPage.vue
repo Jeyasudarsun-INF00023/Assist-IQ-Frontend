@@ -175,6 +175,11 @@
             </div>
           </q-card>
         </div>
+
+        <!-- No Results Animation -->
+        <div v-if="filteredEmployees.length === 0" class="col-12 flex flex-center q-mt-xl">
+           <NoResult />
+        </div>
       </div>
     </div>
 
@@ -202,42 +207,44 @@
       <div class="row q-col-gutter-lg">
         <div v-for="employee in filteredOffboardedEmployees" :key="employee.id" class="col-12 col-sm-6 col-md-4">
           <q-card flat class="employee-card column justify-between full-height" @click="openProfile(employee)">
-          <div class="employee-header-box row no-wrap items-center" style="border-radius: 20px;">
-            <q-avatar size="56px" class="q-mr-md">
-              <img :src="employee.avatar" alt="Avatar" />
-            </q-avatar>
+            <div class="employee-header-box row no-wrap items-center" style="border-radius: 20px;">
+              <q-avatar size="56px" class="q-mr-md">
+                <img :src="employee.avatar" alt="Avatar" />
+              </q-avatar>
 
-            <div class="col">
-              <div class="text-subtitle1 text-weight-bold text-black" style="font-size:16px;font-weight:600;">
-                {{ employee.name }}
+              <div class="col">
+                <div class="text-subtitle1 text-weight-bold text-black" style="font-size:16px;font-weight:600;">
+                  {{ employee.name }}
+                </div>
+                <div class="text-caption text-grey-6" style="font-size:12px;">
+                  {{ employee.role }}
+                </div>
               </div>
-              <div class="text-caption text-grey-6" style="font-size:12px;">
-                {{ employee.role }}
-              </div>
+
+              <ArrowRightIcon :size="20" class="text-grey-5" />
             </div>
 
-            <ArrowRightIcon :size="20" class="text-grey-5" />
-          </div>
+            <div class="row q-mt-md q-col-gutter-x-sm">
+              <div class="col-4">
+                <div class="text-caption q-mb-xs" style="font-size:12px;color:#585858;">Employee ID</div>
+                <div class="text-subtitle2 text-black" style="font-size:14px;">
+                  {{ employee.empId }}
+                </div>
+              </div>
 
-          <div class="row q-mt-md q-col-gutter-x-sm">
-            <div class="col-4">
-              <div class="text-caption q-mb-xs" style="font-size:12px;color:#585858;">Employee ID</div>
-              <div class="text-subtitle2 text-black" style="font-size:14px;">
-                {{ employee.empId }}
+              <div class="col-8">
+                <div class="text-caption q-mb-xs" style="font-size:12px;color:#585858;">Organization Email</div>
+                <div class="text-body2 ellipsis" :title="employee.email" style="font-size:14px;">
+                  {{ employee.email || 'No email' }}
+                </div>
               </div>
             </div>
-
-            <div class="col-8">
-              <div class="text-caption q-mb-xs" style="font-size:12px;color:#585858;">Organization Email</div>
-              <div class="text-body2 ellipsis" :title="employee.email" style="font-size:14px;">
-                {{ employee.email || 'No email' }}
-              </div>
-            </div>
-          </div>
-        </q-card>
+          </q-card>
         </div>
-        <div v-if="filteredOffboardedEmployees.length === 0" class="col-12">
-          <div class="text-center text-grey-5 q-mt-xl" style="font-size: 15px;">No offboarded employees found.</div>
+        
+        <!-- No Results Animation -->
+        <div v-if="filteredOffboardedEmployees.length === 0" class="col-12 flex flex-center q-mt-xl">
+           <NoResult />
         </div>
       </div>
     </div>
@@ -971,17 +978,23 @@
         <!-- Stepper -->
         <div class="row justify-center q-mb-xl">
           <div class="column items-center">
-            <div class="stepper-wrapper">
+            <div class="stepper-wrapper" style="width: 480px;">
                <div class="step-circle" :class="{active: addStep >= 1}">1</div>
                <div class="step-line" :class="{active: addStep >= 2}"></div>
                <div class="step-circle" :class="{active: addStep >= 2}">2</div>
                <div class="step-line" :class="{active: addStep >= 3}"></div>
                <div class="step-circle" :class="{active: addStep >= 3}">3</div>
+               <div class="step-line" :class="{active: addStep >= 4}"></div>
+               <div class="step-circle" :class="{active: addStep >= 4}">4</div>
+               <div class="step-line" :class="{active: addStep >= 5}"></div>
+               <div class="step-circle" :class="{active: addStep >= 5}">5</div>
             </div>
-            <div class="row full-width justify-between q-mt-sm stepper-labels" style="width: 280px; max-width: 100%;">
-               <div class="text-center" style="font-size: 14px; width: 30%" color="#4C36E4" :class="{'text-primary': addStep >= 1}">Basic Details</div>
-               <div class="text-center" style="font-size: 14px; width: 30%" color="#4C36E4" :class="{'text-primary': addStep >= 2}">Job Details</div>
-               <div class="text-center" style="font-size: 14px; width: 30%" color="#4C36E4" :class="{'text-primary': addStep >= 3}">Completion</div>
+            <div class="row full-width justify-between q-mt-sm stepper-labels" style="width: 520px; max-width: 100%;">
+               <div class="text-center" style="font-size: 13px; width: 18%" :class="{'text-primary': addStep >= 1}">Basic Details</div>
+               <div class="text-center" style="font-size: 13px; width: 18%" :class="{'text-primary': addStep >= 2}">Job Details</div>
+               <div class="text-center" style="font-size: 13px; width: 18%" :class="{'text-primary': addStep >= 3}">Asset</div>
+               <div class="text-center" style="font-size: 13px; width: 18%" :class="{'text-primary': addStep >= 4}">documents</div>
+               <div class="text-center" style="font-size: 13px; width: 18%" :class="{'text-primary': addStep >= 5}">Completion</div>
             </div>
           </div>
         </div>
@@ -1064,25 +1077,36 @@
             </q-file>
 
             <div class="doc-list q-mt-md">
-              <div v-for="doc in documents" :key="doc.id" class="doc-item row items-center no-wrap">
-                <FileTextIcon :size="20" class="doc-icon" />
-                <div class="doc-meta">
-                  <div class="doc-name">{{ doc.name }}</div>
-                  <div class="row items-center">
-                    <div class="doc-size">{{ doc.size }}</div>
-                    <div v-if="doc.uploading" class="q-ml-sm row items-center text-primary text-caption">
-                      <q-spinner size="12px" class="q-mr-xs" /> Uploading to SharePoint...
-                    </div>
-                    <div v-else-if="doc.sharepoint_url" class="q-ml-sm text-green text-caption row items-center">
-                      <q-icon name="check_circle" size="12px" class="q-mr-xs" /> SharePoint Synchronized
+              <div v-for="(doc, i) in documents" :key="doc.id" class="row items-center justify-between no-wrap q-py-sm q-px-md q-mb-sm" style="background: rgba(246, 246, 251, 1); border-radius: 16px">
+                <div class="row items-center">
+                  <div class="bg-white flex flex-center q-mr-md" style="width: 38px; height: 38px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                    <q-icon name="description" size="20px" color="primary" />
+                  </div>
+                  <div>
+                    <div class="text-weight-medium text-black" style="font-size: 14px">{{ doc.name }}</div>
+                    <div class="row items-center">
+                      <div class="text-grey-5" style="font-size: 12px">{{ doc.size }}</div>
+                      
+                      <!-- SharePoint Status -->
+                      <div v-if="doc.uploading" class="q-ml-sm row items-center text-primary" style="font-size: 11px">
+                        <q-spinner size="10px" class="q-mr-xs" /> Uploading to SharePoint...
+                      </div>
+                      <div v-else-if="doc.sharepoint_url" class="q-ml-sm text-green row items-center" style="font-size: 11px">
+                        <q-icon name="check_circle" size="10px" class="q-mr-xs" /> SharePoint Synchronized
+                      </div>
+                      <div v-else-if="doc.error" class="q-ml-sm text-negative row items-center" style="font-size: 11px">
+                        <q-icon name="error" size="10px" class="q-mr-xs" /> Upload Failed
+                      </div>
                     </div>
                   </div>
                 </div>
-                <q-space />
-                <a v-if="doc.sharepoint_url" :href="doc.sharepoint_url" target="_blank" class="q-mr-sm">
-                  <ArrowUpRightIcon :size="18" class="text-primary" />
-                </a>
-                <q-btn flat round dense icon="close" class="doc-remove" @click="removeDocument(doc.id)" />
+                
+                <div class="row items-center">
+                   <a v-if="doc.sharepoint_url" :href="doc.sharepoint_url" target="_blank" class="q-mr-sm row items-center no-decoration">
+                     <q-icon name="open_in_new" size="16px" color="primary" />
+                   </a>
+                   <q-btn flat round dense icon="close" size="10px" class="text-grey-6" @click="removeDocument(doc.id)" />
+                </div>
               </div>
             </div>
 
@@ -1096,104 +1120,236 @@
 
           <template v-else-if="addStep === 2">
             <!-- Job Details -->
-            <div class="text-subtitle1 text-weight-bold q-mb-sm text-center" style="font-size: 18px">Job Details</div>
+            <div class="text-subtitle1 text-weight-bold q-mb-xl text-center" style="font-size: 18px">Job Details</div>
 
-            <div class="text-subtitle2 text-weight-bold q-mt-md"style="font-size: 16px">Experience</div>
-            <div class="text-caption text-grey-7 q-mb-md"style="font-size: 14px">Select the employee's experience level based on their professional experience.</div>
+            <!-- Identification & Allocation -->
+            <div class="text-subtitle2 text-weight-bold q-mt-md" style="font-size: 16px">Identification & Allocation</div>
+            <div class="text-caption text-grey-7 q-mb-md" style="font-size: 14px">Set the employee ID and select a role to allocate a workstation to the employee.</div>
             
-            <div class="row q-col-gutter-md">
+            <div class="row q-col-gutter-lg">
               <div class="col-12 col-sm-6">
-                <div class="q-ml-sm q-mb-xs text-caption text-grey-7"style="font-size: 14px">Experience Level</div>
-                <q-select v-model="experienceLevel" :options="experienceOptions" outlined dense rounded class="form-input" />
+                <div class="q-ml-sm q-mb-xs text-caption text-grey-7" style="font-size: 14px">Employee ID</div>
+                <q-input v-model="employeeId" outlined dense rounded class="form-input" placeholder="e.g. COMP0012" />
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="q-ml-sm q-mb-xs text-caption text-grey-7" style="font-size: 14px">Role</div> 
+                <q-select v-model="department" :options="departmentOptions" outlined dense rounded class="form-input" dropdown-icon="expand_more" />
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="q-ml-sm q-mb-xs text-caption text-grey-7" style="font-size: 14px">Employment Type</div>
+                <q-select v-model="employmentType" :options="employmentTypeOptions" outlined dense rounded class="form-input" dropdown-icon="expand_more" />
               </div>
             </div>
 
-            <div class="text-subtitle2 text-weight-bold q-mt-xl"style="font-size: 16px">Asset Allocation</div>
-            <div class="text-caption text-grey-7 q-mb-md"style="font-size: 14px">Assign work devices to the employee.</div>
+            <!-- Experience -->
+            <div class="text-subtitle2 text-weight-bold q-mt-xl" style="font-size: 16px">Experience</div>
+            <div class="text-caption text-grey-7 q-mb-md" style="font-size: 14px">Select the employee's experience level based on their professional experience.</div>
             
-            <div class="row q-col-gutter-md">
+            <div class="row q-col-gutter-lg">
               <div class="col-12 col-sm-6">
-                <div class="q-ml-sm q-mb-xs text-caption text-grey-7"style="font-size: 14px">Laptop</div>
-                <q-select v-model="laptop" :options="laptopOptions" outlined dense rounded class="form-input" />
+                <div class="q-ml-sm q-mb-xs text-caption text-grey-7" style="font-size: 14px">Experience Level</div>
+                <q-select v-model="experienceLevel" :options="experienceOptions" outlined dense rounded class="form-input" dropdown-icon="expand_more" />
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="q-ml-sm q-mb-xs text-caption text-grey-7"style="font-size: 14px">Mouse</div>
-                <q-select v-model="mouse" :options="mouseOptions" outlined dense rounded class="form-input" />
-              </div>
-              <div class="col-12 col-sm-6 q-mt-sm">
-                <div class="q-ml-sm q-mb-xs text-caption text-grey-7"style="font-size: 14px">Headphone</div>
-                <q-select v-model="headphone" :options="headphoneOptions" outlined dense rounded class="form-input" />
-              </div>
-            </div>
-
-            <div class="text-subtitle2 text-weight-bold q-mt-xl"style="font-size: 16px">Identification & Allocation</div>
-            <div class="text-caption text-grey-7 q-mb-md"style="font-size: 14px">Set the employee ID and select a role to allocate a workstation to the employee.</div>
-            
-            <div class="row q-col-gutter-md">
-              <div class="col-12 col-sm-6">
-                <div class="q-ml-sm q-mb-xs text-caption text-grey-7"style="font-size: 14px">Employee ID</div>
-                <q-input v-model="employeeId" outlined dense rounded class="form-input" :rules="[val => val && val.length > 0 || 'Employee ID is required']"/>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="q-ml-sm q-mb-xs text-caption text-grey-7"style="font-size: 14px">Role</div> 
-                <q-select v-model="department" :options="departmentOptions" outlined dense rounded class="form-input" />
-              </div>
-            </div>
-
-            <div class="seat-grid-container q-mt-lg">
-               <div class="text-subtitle2 text-weight-bold text-center q-mb-md"style="font-size: 16px">Software Developers</div>
-               <div class="seat-grid">
-                <div
-                  v-for="seat in seats"
-                  :key="seat.id"
-                  class="column items-center justify-center cursor-pointer seat-wrapper"
-                  style="width: 52px; height: 73px;"
-                  @click="!isSeatAssigned(seat.id) && (selectedSeat = selectedSeat === seat.id ? null : seat.id)"
-                >
-                <ArmchairIcon 
-                  :size="40" 
-                  :class="[
-                    'q-mb-xs seat-icon', 
-                    { 
-                      'text-grey-5': isSeatAssigned(seat.id),
-                      'text-blue-6': seat.id === selectedSeat && !isSeatAssigned(seat.id),
-                      'text-green-5': !isSeatAssigned(seat.id) && seat.id !== selectedSeat
-                    }
-                  ]" 
-                />
-                <div 
-                  class="seat-label" 
-                  :class="{ 
-                    'text-grey-5': isSeatAssigned(seat.id),
-                    'text-blue-6': seat.id === selectedSeat && !isSeatAssigned(seat.id),
-                    'text-green-5': !isSeatAssigned(seat.id) && seat.id !== selectedSeat
-                  }"
-                >
-                  0{{ seat.id }}
-                </div>
-                </div>
-               </div>
             </div>
 
             <div class="row justify-center q-mt-xl q-gutter-md">
-              <q-btn outline no-caps class="secondary-btn" label="Cancel" @click="addStep = 1" style="width: 120px;" />
-              <q-btn unelevated no-caps class="primary-btn" :label="selectedEmployee ? 'Update' : 'Add'" @click="createAccountWizard" :loading="isCreating" style="width: 120px;" />
+              <q-btn outline no-caps class="secondary-btn" label="Cancel" @click="addStep = 1" style="width: 140px; border-radius: 20px;" />
+              <q-btn unelevated no-caps class="primary-btn" label="Continue" @click="addStep = 3" style="width: 140px; border-radius: 20px;" />
             </div>
           </template>
 
           <template v-else-if="addStep === 3">
+            <!-- Asset Allocation -->
+            <div class="text-subtitle1 text-weight-bold q-mb-xl text-center" style="font-size: 18px">Asset Allocation</div>
+
+            <div class="text-subtitle2 text-weight-bold" style="font-size: 16px">Assign Assets</div>
+            <div class="text-caption text-grey-7 q-mb-md" style="font-size: 14px">Assign work devices to the employee.</div>
+            
+            <!-- Laptop Section -->
+            <div class="q-mb-lg">
+              <div class="text-caption text-grey-7 q-mb-xs" style="font-size: 14px">Laptop</div>
+              <div v-if="laptop" class="row items-center no-wrap q-py-sm q-px-md bg-grey-1" style="border-radius: 16px; border: 1px solid #EEF0F5;">
+                 <div class="text-weight-bold text-black q-mr-sm" style="font-size: 14px">{{ laptop.split(' ')[0] }}</div>
+                 <div class="text-grey-6 ellipsis" style="font-size: 14px">{{ laptop.split(' ').slice(1).join(' ') }}</div>
+                 <q-space />
+                 <q-btn flat round dense icon="close" size="sm" @click="laptop = ''" />
+              </div>
+              <div v-else class="assign-asset-placeholder cursor-pointer flex flex-center" @click="openAssetSelect('Laptop')" style="border: 1.5px dashed #4C36E480; border-radius: 16px; height: 50px;">
+                <div class="text-primary text-weight-medium">Assign Asset</div>
+              </div>
+            </div>
+
+            <!-- Mouse Section -->
+            <div class="q-mb-lg">
+              <div class="text-caption text-grey-7 q-mb-xs" style="font-size: 14px">Mouse</div>
+              <div v-if="mouse" class="row items-center no-wrap q-py-sm q-px-md bg-grey-1" style="border-radius: 16px; border: 1px solid #EEF0F5;">
+                 <div class="text-weight-bold text-black q-mr-sm" style="font-size: 14px">{{ mouse.split(' ')[0] }}</div>
+                 <div class="text-grey-6 ellipsis" style="font-size: 14px">{{ mouse.split(' ').slice(1).join(' ') }}</div>
+                 <q-space />
+                 <q-btn flat round dense icon="close" size="sm" @click="mouse = ''" />
+              </div>
+              <div v-else class="assign-asset-placeholder cursor-pointer flex flex-center" @click="openAssetSelect('Mouse')" style="border: 1.5px dashed #4C36E480; border-radius: 16px; height: 50px;">
+                <div class="text-primary text-weight-medium">Assign Asset</div>
+              </div>
+            </div>
+
+            <!-- Headphone Section -->
+            <div class="q-mb-xl">
+              <div class="text-caption text-grey-7 q-mb-xs" style="font-size: 14px">Headphone</div>
+              <div v-if="headphone" class="row items-center no-wrap q-py-sm q-px-md bg-grey-1" style="border-radius: 16px; border: 1px solid #EEF0F5;">
+                 <div class="text-weight-bold text-black q-mr-sm" style="font-size: 14px">{{ headphone.split(' ')[0] }}</div>
+                 <div class="text-grey-6 ellipsis" style="font-size: 14px">{{ headphone.split(' ').slice(1).join(' ') }}</div>
+                 <q-space />
+                 <q-btn flat round dense icon="close" size="sm" @click="headphone = ''" />
+              </div>
+              <div v-else class="assign-asset-placeholder cursor-pointer flex flex-center" @click="openAssetSelect('Headphone')" style="border: 1.5px dashed #4C36E480; border-radius: 16px; height: 50px;">
+                <div class="text-primary text-weight-medium">Assign Asset</div>
+              </div>
+            </div>
+
+            <div class="row justify-center q-mt-xl q-gutter-md">
+              <q-btn outline no-caps label="Cancel" @click="addStep = 2" style="width: 140px; border-radius: 20px;" />
+              <q-btn unelevated no-caps class="primary-btn" label="Continue" @click="addStep = 4" style="width: 140px; border-radius: 20px;" />
+            </div>
+            
+            <q-dialog v-model="showAssetSelectDialog">
+              <q-card style="width: 500px; max-width: 90vw; border-radius: 24px;" class="q-pa-md">
+                <div class="row items-center q-mb-md">
+                  <q-input v-model="assetSearch" dense outlined rounded class="col q-mr-sm" placeholder="Search..." bg-color="white">
+                    <template v-slot:prepend><q-icon name="search" size="20px" /></template>
+                  </q-input>
+                  <q-btn flat no-caps label="Close" v-close-popup />
+                </div>
+                <div class="q-gutter-y-sm">
+                   <div v-for="opt in filteredAssetOptions" :key="opt" class="row items-center justify-between q-pa-md bg-white hover-asset" style="border-radius: 16px; border: 1px solid rgba(0,0,0,0.03)" @click="selectAsset(opt)">
+                      <div class="row items-center">
+                        <div class="text-weight-bold text-black q-mr-sm">{{ opt.split(' ')[0] }}</div>
+                        <div class="text-grey-6">{{ opt.split(' ').slice(1).join(' ') }}</div>
+                      </div>
+                      <div class="row items-center">
+                        <span class="text-primary q-mr-md cursor-pointer" style="font-size: 13px;">Asset Info</span>
+                        <q-icon name="check_circle_outline" color="green" size="20px" />
+                      </div>
+                   </div>
+                </div>
+              </q-card>
+            </q-dialog>
+          </template>
+
+          <template v-else-if="addStep === 4">
+            <!-- documents (Payroll/Doc) -->
+            <div class="text-subtitle1 text-weight-bold q-mb-xl text-center" style="font-size: 18px">Document</div>
+
+            <div class="text-subtitle2 text-weight-bold" style="font-size: 16px">Basic Details</div>
+            <div class="text-caption text-grey-7 q-mb-md" style="font-size: 14px">Fill in the fields below to populate the employee's information in the document</div>
+            
+            <div class="row q-col-gutter-lg q-mb-xl">
+              <div class="col-12 col-sm-6">
+                <div class="q-ml-sm q-mb-xs text-caption text-grey-7" style="font-size: 14px">Date</div>
+                <q-input v-model="joiningDate" outlined dense rounded class="form-input">
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                        <q-date v-model="joiningDate" mask="DD/MM/YYYY" />
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="q-ml-sm q-mb-xs text-caption text-grey-7" style="font-size: 14px">Name</div>
+                <q-input v-model="firstName" outlined dense rounded class="form-input" readonly />
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="q-ml-sm q-mb-xs text-caption text-grey-7" style="font-size: 14px">Job Role</div>
+                <q-input v-model="department" outlined dense rounded class="form-input" readonly />
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="q-ml-sm q-mb-xs text-caption text-grey-7" style="font-size: 14px">Salary (Per Annum)</div>
+                <q-input v-model="salary" outlined dense rounded class="form-input" placeholder="e.g. 20,00,000" />
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="q-ml-sm q-mb-xs text-caption text-grey-7" style="font-size: 14px">Joining Date</div>
+                <q-input v-model="joiningDate" outlined dense rounded class="form-input" />
+              </div>
+            </div>
+
+            <div class="text-subtitle2 text-weight-bold" style="font-size: 16px">Compensation Details</div>
+            <div class="text-caption text-grey-7 q-mb-md" style="font-size: 14px">Fill in the fields below to populate the employee's information in the document</div>
+            
+            <q-card flat style="border-radius: 20px; border: 1px solid #EEF0F5; overflow: hidden;" class="q-mb-xl">
+               <div class="row q-pa-md bg-grey-1 text-weight-bold" style="font-size: 14px;">
+                  <div class="col-4">Payheads</div>
+                  <div class="col-4 text-center">Monthly (₹)</div>
+                  <div class="col-4 text-center">Yearly (₹)</div>
+               </div>
+               <div v-for="item in compensationData" :key="item.label" class="row q-pa-md items-center" style="border-top: 1px solid #EEF0F5;">
+                  <div class="col-4 text-weight-medium text-grey-7" style="font-size: 12px;">{{ item.label }}</div>
+                  <div class="col-4 q-px-sm">
+                    <q-input v-model="item.monthly" dense outlined rounded class="form-input text-center" bg-color="white" />
+                  </div>
+                  <div class="col-4 q-px-sm">
+                    <q-input v-model="item.yearly" dense outlined rounded class="form-input text-center" bg-color="white" />
+                  </div>
+               </div>
+            </q-card>
+
+            <div class="text-subtitle2 text-weight-bold" style="font-size: 16px">Submitted Document</div>
+            <div class="text-caption text-grey-7 q-mb-md" style="font-size: 14px">Check the box for the document submitted by the employee</div>
+
+            <div class="column q-gutter-y-sm q-mb-xl">
+               <div v-for="doc in submittedDocsChecklist" :key="doc.label" class="row items-center justify-between q-py-sm">
+                  <div class="text-grey-7" style="font-size: 14px;">{{ doc.label }}</div>
+                  <q-checkbox v-model="doc.checked" color="primary" />
+               </div>
+            </div>
+
+            <div class="row justify-between items-center q-mt-xl">
+              <q-btn 
+                outline 
+                no-caps 
+                label="Preview" 
+                @click="previewPDF" 
+                style="width: 140px; border-radius: 20px; border: 1.5px solid #4C36E4; color: #4C36E4;" 
+              />
+              <div class="row q-gutter-md">
+                <q-btn unelevated no-caps label="Cancel" @click="addStep = 3" style="width: 140px; background: #F4F4F4; color: #000; border-radius: 20px;" />
+                <q-btn unelevated no-caps class="primary-btn" label="Save & Continue" @click="createAccountWizard" :loading="isCreating" style="width: 140px; border-radius: 20px;" />
+              </div>
+            </div>
+          </template>
+
+          <template v-else-if="addStep === 5">
             <!-- Completion step -->
             <div class="column items-center justify-center text-center q-py-xl">
-               <img src="/undraw_successful-upload_t9fz 1.svg" class="q-mb-md" style="width: 120px; height: 120px;" />
-               <div class="text-h6 text-weight-bold q-mb-sm">Profile {{ selectedEmployee ? 'Updated' : 'Added' }} Successfully</div>
-               <div class="text-caption text-grey-6 q-mb-xl" style="max-width: 400px; font-size: 14px;">
-                  The employee's profile has been securely saved to the directory. You can now generate Microsoft account credentials for this user.
+               <img src="/contact icon.svg" class="q-mb-md" style="width: 140px; height: 140px;" />
+               <div class="text-h5 text-weight-bold q-mb-sm">All Set!</div>
+               <div class="text-caption text-grey-6 q-mb-xl" style="max-width: 400px; font-size: 15px;">
+                  The employee's profile has been securely saved and the document generated successfully.
                </div>
-               <q-btn unelevated no-caps class="primary-btn" label="Close" @click="cancelAddEmployee" style="width: 140px; border-radius: 20px;" />
+               <q-btn unelevated no-caps class="primary-btn" label="Close" @click="cancelAddEmployee" style="width: 160px; border-radius: 24px; height: 50px;" />
             </div>
           </template>
         </div>
       </q-card>
+      
+      <!-- PDF Preview Dialog -->
+      <q-dialog v-model="showPreview" persistent maximized transition-show="fade" transition-hide="fade">
+        <q-card class="column no-wrap" style="background: rgba(15, 23, 42, 0.95);">
+          <div class="row items-center justify-between q-pa-md bg-white border-bottom">
+            <div class="row items-center">
+              <q-icon name="description" color="primary" size="24px" class="q-mr-sm" />
+              <div class="text-subtitle1 text-weight-bold text-black" style="font-size: 18px;">Document Preview</div>
+            </div>
+            <q-btn flat round icon="close" v-close-popup class="text-grey-7" />
+          </div>
+          <div class="col full-width bg-transparent q-pa-xl flex flex-center">
+             <div class="full-width full-height relative-position shadow-24" style="max-width: 900px; border-radius: 12px; overflow: hidden; background: white;">
+                <iframe :src="previewUrl" width="100%" height="100%" frameborder="0"></iframe>
+             </div>
+          </div>
+        </q-card>
+      </q-dialog>
     </div>
     <!-- ===== MONITORING PAGE (Added based on UI) ===== -->
     <div v-else-if="showMonitoring" class="monitoring-page">
@@ -1406,8 +1562,9 @@
 import { ref, computed, onMounted, reactive } from 'vue'
 import axios from 'axios'
 import { IdCard as IdCardIcon, Search as SearchIcon, Upload as UploadIcon, Camera as CameraIcon, Armchair as ArmchairIcon, FileText as FileTextIcon, ArrowUpRight as ArrowUpRightIcon, ArrowRight as ArrowRightIcon, Mouse as MouseIcon, Monitor as MonitorIcon, Headphones as HeadphonesIcon, UserRoundMinus as UserRoundMinusIcon, MoreVertical as MoreVerticalIcon } from 'lucide-vue-next'
+import NoResult from './NoResult.vue'
 
-const API_URL = process.env.BACKEND_URL || 'https://assist-iq-backend-2.onrender.com'||'http://127.0.0.1:8000'
+const API_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8000' || 'https://assist-iq-backend-2.onrender.com'
 
 const api = axios.create({
   baseURL: API_URL
@@ -1433,6 +1590,9 @@ const isSendingVerificationCode = ref(false)
 const isVerifyingEmailCode = ref(false)
 const resendTimer = ref(0)
 const resendInterval = ref(null)
+
+const showPreview = ref(false)
+const previewUrl = ref('')
 
 const showVerifyModal = computed(() => emailStep.value === 'existing_verify')
 const showAllSetModal = computed(() => emailStep.value === 'existing_success')
@@ -1629,11 +1789,71 @@ const uploadedFile = ref(null)
 const avatarPreview = ref(null)
 const avatarInput = ref(null)
 
+const joiningDate = ref('')
+const salary = ref('')
+const employmentType = ref('Full Time')
+const compensationData = ref([
+  { label: 'BASIC', monthly: 0, yearly: 0 },
+  { label: 'HRA', monthly: 0, yearly: 0 },
+  { label: 'OTHER ALLOWANCE', monthly: 0, yearly: 0 },
+  { label: 'GROSS', monthly: 0, yearly: 0 },
+  { label: 'ESI EMPLOER CONT', monthly: 0, yearly: 0 },
+  { label: 'EPF EMPLOER CONT', monthly: 0, yearly: 0 },
+  { label: 'CTC', monthly: 0, yearly: 0 },
+  { label: 'TDS', monthly: 0, yearly: 0 },
+  { label: 'EPF EMPLOYEE', monthly: 0, yearly: 0 },
+  { label: 'ESI EMPLOYEE', monthly: 0, yearly: 0 },
+  { label: 'NET SALARY', monthly: 0, yearly: 0 }
+])
+
+const submittedDocsChecklist = ref([
+  { label: 'Address Proof (Any Valid ID)', checked: true },
+  { label: 'Bank Passbook / Cancelled Cheque (First Page)', checked: false },
+  { label: 'Passport Size Photographs (2 copies)', checked: false },
+  { label: 'SSLC Certificates', checked: false },
+  { label: 'HSC Certificates', checked: true },
+  { label: 'Degree Certificate', checked: true },
+  { label: 'Previous Company Offer Letter', checked: false },
+  { label: 'Experience Letter', checked: true },
+  { label: 'Relieving Letter ', checked: false }, // Note the space for uniqueness
+  { label: 'Last 3 Months Payslips', checked: true },
+  { label: 'Internship Certificate (If any)', checked: true },
+  { label: 'Project / Training Certificate (If any)', checked: true },
+  { label: 'Relieving Letter', checked: true }
+])
+
 const documents = ref([])
 
 const laptopOptions = ref([])
 const mouseOptions = ref([])
 const headphoneOptions = ref([])
+
+const showAssetSelectDialog = ref(false)
+const assetSearch = ref('')
+const selectingAssetType = ref('')
+
+const openAssetSelect = (type) => {
+  selectingAssetType.value = type
+  assetSearch.value = ''
+  showAssetSelectDialog.value = true
+}
+
+const selectAsset = (assetStr) => {
+  if (selectingAssetType.value === 'Laptop') laptop.value = assetStr
+  else if (selectingAssetType.value === 'Mouse') mouse.value = assetStr
+  else if (selectingAssetType.value === 'Headphone') headphone.value = assetStr
+  showAssetSelectDialog.value = false
+}
+
+const filteredAssetOptions = computed(() => {
+  let opts = []
+  if (selectingAssetType.value === 'Laptop') opts = laptopOptions.value
+  else if (selectingAssetType.value === 'Mouse') opts = mouseOptions.value
+  else if (selectingAssetType.value === 'Headphone') opts = headphoneOptions.value
+  
+  if (!assetSearch.value) return opts
+  return opts.filter(o => o.toLowerCase().includes(assetSearch.value.toLowerCase()))
+})
 
 const fetchAssets = async () => {
   try {
@@ -1721,8 +1941,8 @@ onMounted(async () => {
 })
 
 // Hardcoded options removed - now fetched from API
-const departmentOptions = ['Developer', 'Designer', 'QA', 'Product']
-
+const departmentOptions = ['Junior UX UI Designer', 'Senior Developer', 'Product Manager', 'QA Lead']
+const employmentTypeOptions = ['Full Time', 'Part Time', 'Contract', 'Intern']
 const experienceOptions = ['Level 1 (Beginner)', 'Level 2 (Intermediate)', 'Level 3 (Advanced)', 'Level 4 (Expert)']
 
 const seats = ref([
@@ -1821,27 +2041,58 @@ const addDocument = async () => {
     const idx = documents.value.findIndex(d => d.id === tempId)
     if (idx !== -1) {
       if (res.data && res.data.success) {
-        documents.value[idx] = {
+        documents.value.splice(idx, 1, {
           ...documents.value[idx],
           id: res.data.document.id,
           uploading: false,
           sharepoint_url: res.data.document.sharepoint_url
-        }
+        })
       } else {
-        documents.value[idx].uploading = false
-        documents.value[idx].error = true
+        const item = { ...documents.value[idx], uploading: false, error: true }
+        documents.value.splice(idx, 1, item)
       }
     }
   } catch (e) {
     console.error('Upload failed', e)
     const idx = documents.value.findIndex(d => d.id === tempId)
-    if (idx !== -1) documents.value[idx].uploading = false
+    if (idx !== -1) {
+      const item = { ...documents.value[idx], uploading: false, error: true }
+      documents.value.splice(idx, 1, item)
+    }
   }
 }
 
 
 const removeDocument = (id) => {
   documents.value = documents.value.filter(doc => doc.id !== id)
+}
+
+const previewPDF = async () => {
+  try {
+    const payload = {
+      employee_name: `${firstName.value} ${lastName.value}`,
+      address: address.value,
+      date: new Date().toLocaleDateString('en-GB'), // 07-04-2026 format (ish)
+      role: department.value,
+      joining_date: joiningDate.value,
+      salary: salary.value
+    }
+    
+    const response = await fetch(`${API_URL}/preview-pdf`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+
+    if (!response.ok) throw new Error("Failed to generate PDF")
+
+    const blob = await response.blob()
+    previewUrl.value = URL.createObjectURL(blob)
+    showPreview.value = true
+  } catch (error) {
+    console.error("Preview PDF error:", error)
+    alert("Failed to generate preview")
+  }
 }
 
 const downloadAgent = (employee) => {
@@ -2088,10 +2339,13 @@ const addDocFile = async (val) => {
     const idx = docsList.value.findIndex(d => d.id === tempId)
     if (idx !== -1) {
       if (res.data && res.data.success) {
-        docsList.value[idx].uploading = false
-        docsList.value[idx].sharepoint_url = res.data.file_url
+        docsList.value.splice(idx, 1, {
+          ...docsList.value[idx],
+          uploading: false,
+          sharepoint_url: res.data.document.sharepoint_url
+        })
       } else {
-        docsList.value[idx].uploading = false
+        docsList.value.splice(idx, 1, { ...docsList.value[idx], uploading: false, error: true })
       }
     }
   } catch (err) {
@@ -2417,7 +2671,7 @@ const createAccountWizard = async () => {
       }
     }
     
-    addStep.value = 3 // Move to completion wizard step
+    addStep.value = 5 // Move to completion wizard step
 
   } catch (e) {
     console.error('Failed to save user', e)
@@ -3330,6 +3584,39 @@ const connectActivitySocket = (employeeEmpId) => {
   flex-wrap: wrap;
   justify-content: center;
   gap: 30px 40px;
+}
+
+.hover-asset {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.hover-asset:hover {
+  background: #F3F4FB !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.assign-asset-placeholder {
+  transition: all 0.2s ease;
+}
+.assign-asset-placeholder:hover {
+  background: rgba(76, 54, 228, 0.05);
+  border-color: #4C36E4 !important;
+}
+
+/* Fix stepper label alignment */
+.stepper-labels .text-primary {
+  color: #4C36E4 !important;
+  font-weight: 600;
+}
+
+.form-input :deep(.q-field__control) {
+  border-radius: 20px !important;
+}
+
+.form-input :deep(.q-placeholder) {
+  color: #9CA3AF;
+  opacity: 1;
 }
 
 .seat-wrapper {
